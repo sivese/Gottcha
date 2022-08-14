@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using UnityEngine.UI;
+using TMPro;
+
 namespace dummy
 {
     public class InteractionSystem : MonoBehaviour
@@ -13,6 +16,13 @@ namespace dummy
         private LayerMask detectionLayer;
         private const float detectionRadius = 0.2f;
 
+        /* Examine systems */
+        private Transform   uiRoot;
+        private GameObject  examineWindow;
+        private TMP_Text    examineText;
+        private Image       examineImage;
+        private bool examining = false;
+
         private GameObject detectObject;
         private List<GameObject> pickedItems = new List<GameObject>();
 
@@ -21,6 +31,8 @@ namespace dummy
         {
             detectionLayer = LayerMask.GetMask("Item");
             detectionPoint = transform.Find(DETECTION_OBJECT);
+
+            InitUiIsntance();
         }
 
         // Update is called once per frame
@@ -54,13 +66,48 @@ namespace dummy
         {
             if (detectionPoint == null) return;
 
-            Gizmos.color = Color.black;
+            Gizmos.color = Color.red;
             Gizmos.DrawSphere(detectionPoint.position, detectionRadius);
+        }
+
+        private void InitUiIsntance()
+        {
+            uiRoot = GameObject
+                .Find("/canvas")
+                .transform;
+
+            examineWindow   = uiRoot
+                .Find("examine_ui")
+                .gameObject;
+            
+            examineImage = examineWindow
+                .transform
+                .Find("item_image")
+                .GetComponent<Image>();
+
+            examineText = examineWindow
+                .transform
+                .Find("item_description")
+                .GetComponent<TMP_Text>();
+
+            if (examineText == null) Debug.Log("null text!");
         }
 
         public void PickUpItem(GameObject item)
         {
             pickedItems.Add(item);
+        }
+
+        public void ExamineItem(Item item)
+        {
+            examineImage.sprite = item.GetComponent<SpriteRenderer>().sprite;
+            examineText.text = item.DescriptionText;
+            examineWindow.SetActive(true);
+        }
+
+        public bool Freeze()
+        {
+
         }
     }
 

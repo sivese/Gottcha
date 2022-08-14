@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Fox : MonoBehaviour
@@ -25,6 +26,7 @@ public class Fox : MonoBehaviour
     [SerializeField]
     private int totalJump = 3;
     private int availableJump;
+    private bool coyoteJump = false;
 
     private LayerMask groundLayer;
     private Transform groundChecker;
@@ -95,6 +97,7 @@ public class Fox : MonoBehaviour
                 availableJump = totalJump;
             }
         }
+        else if (wasGrouned) StartCoroutine(WaitCoyoteTime());
 
         animator.SetBool("Jump", !isGrounded);
     }
@@ -116,6 +119,16 @@ public class Fox : MonoBehaviour
             body.velocity = Vector2.up * jumpPower;
             animator.SetBool("Jump", true);
         }
+        else if(coyoteJump)
+        {
+            multipleJump = true;
+            availableJump--;
+
+            body.velocity = Vector2.up * jumpPower;
+            animator.SetBool("Jump", true);
+
+            coyoteJump = false;
+        }
     }
 
     private void Move(float dir)
@@ -129,5 +142,11 @@ public class Fox : MonoBehaviour
         animator.SetFloat("Speed", Mathf.Abs(body.velocity.x));
     }
 
-
+    IEnumerator WaitCoyoteTime()
+    {
+        coyoteJump = true;
+        yield return new WaitForSeconds(0.5f);
+        coyoteJump = false;
+    }
 }
+

@@ -18,6 +18,11 @@ namespace dummy
         [SerializeField]
         private InteractionType type;
 
+        [Header("Examine")]
+        [SerializeField]
+        private string descriptionText;
+        public string DescriptionText => descriptionText;
+
         private const int ITEM_LAYER = 8;
 
         private void Reset()
@@ -34,11 +39,15 @@ namespace dummy
                     break;
                 case InteractionType.PickUp:
                     Debug.Log("PICK UP");
-                    FindObjectOfType<InteractionSystem>().PickUpItem(gameObject);
+                    FindObjectOfType<InteractionSystem>().PickUpItem(gameObject); // Find object with type
                     gameObject.SetActive(false);
                     break;
                 case InteractionType.Examine:
+                    /*
+                        Display some images
+                    */
                     Debug.Log("EXAMINE");
+                    FindObjectOfType<InteractionSystem>().ExamineItem(this);
                     break;
                 default:
                     Debug.Log("NULL ITEM");

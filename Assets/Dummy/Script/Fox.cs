@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace dummy
 {
-    public class Fox : MonoBehaviour
+    public partial class Fox : MonoBehaviour
     {
         private SpriteRenderer renderer;
         private Rigidbody2D body;
@@ -39,8 +39,8 @@ namespace dummy
             animator = GetComponent<Animator>();
             renderer = GetComponent<SpriteRenderer>();
 
-            groundLayer = LayerMask.GetMask("Ground");
-            groundChecker = GameObject.Find("groundChecker").transform;
+            groundLayer     = LayerMask.GetMask("Ground");
+            groundChecker   = GameObject.Find("groundChecker").transform;
 
             availableJump = totalJump;
         }
@@ -151,6 +151,20 @@ namespace dummy
             animator.SetFloat("Speed", Mathf.Abs(body.velocity.x));
         }
 
+        private void OnDrawGizmosSelected()
+        {
+            if (groundChecker == null) return;
 
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawSphere(groundChecker.position, groundRadius);
+        }
+    }
+
+    /*
+        Interaction systems and item things
+     */
+    public partial class Fox
+    {
+        InteractionSystem interactionSystem;
     }
 }
