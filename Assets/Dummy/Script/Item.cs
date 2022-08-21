@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace dummy
 {
@@ -21,7 +23,11 @@ namespace dummy
         [Header("Examine")]
         [SerializeField]
         private string descriptionText;
+
         public string DescriptionText => descriptionText;
+
+        [Header("Custom Event")]
+        public UnityEvent customEvent;
 
         private const int ITEM_LAYER = 8;
 
@@ -53,6 +59,8 @@ namespace dummy
                     Debug.Log("NULL ITEM");
                     break;
             }
+
+            customEvent.Invoke();
         }
     }
 }

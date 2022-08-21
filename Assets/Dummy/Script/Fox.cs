@@ -23,6 +23,7 @@ namespace dummy
         private bool jump = false;
         private bool coyoteJump = false;
         private bool multipleJump = false;
+
         [SerializeField]
         private float jumpPower = 6.0f;
         [SerializeField]
@@ -48,6 +49,8 @@ namespace dummy
         // Update is called once per frame
         private void Update()
         {
+            if (!CanMove()) return;
+
             if (Input.GetKey(KeyCode.RightArrow))
             {
                 facingRight = true;
@@ -79,6 +82,19 @@ namespace dummy
 
             if (facingRight) renderer.flipX = false;
             else renderer.flipX = true;
+        }
+
+        private bool CanMove()
+        {
+            if(FindObjectOfType<InteractionSystem>().IsExamining)
+            {
+                body.velocity = Vector3.zero;
+                horValue = 0;
+
+                return false;
+            }
+
+            return true;
         }
 
         private void GroundCheck()

@@ -21,7 +21,9 @@ namespace dummy
         private GameObject  examineWindow;
         private TMP_Text    examineText;
         private Image       examineImage;
+
         private bool examining = false;
+        public bool IsExamining => examining;
 
         private GameObject detectObject;
         private List<GameObject> pickedItems = new List<GameObject>();
@@ -100,15 +102,24 @@ namespace dummy
 
         public void ExamineItem(Item item)
         {
+            if(examining)
+            {
+                examineWindow.SetActive(false);
+                examining = false;
+                return;
+            }
+
             examineImage.sprite = item.GetComponent<SpriteRenderer>().sprite;
             examineText.text = item.DescriptionText;
             examineWindow.SetActive(true);
+
+            examining = true;
         }
 
-        public bool Freeze()
-        {
+        //public bool Freeze()
+        //{
 
-        }
+        //}
     }
 
 }
