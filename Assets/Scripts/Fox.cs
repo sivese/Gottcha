@@ -47,6 +47,13 @@ public class Fox : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if (!IsMovable)
+        {
+            body.velocity = Vector2.zero;
+            horValue = 0;
+            return;
+        }
+
         if (Input.GetKey(KeyCode.RightArrow))
         {
             facingRight = true;
@@ -80,6 +87,8 @@ public class Fox : MonoBehaviour
         else renderer.flipX = true;
     }
 
+    private bool IsMovable => !FindObjectOfType<InteractionSystem>().IsExamining;
+    
     private void GroundCheck()
     {
         var wasGrouned = isGrounded;

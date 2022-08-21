@@ -5,8 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
-public class InteractionSystem : MonoBehaviour
+public partial class InteractionSystem : MonoBehaviour
 {
     private const string DETECTION_OBJECT = "interactionSystem";
     private const string ITEM_LAYER = "Item";
@@ -23,6 +25,8 @@ public class InteractionSystem : MonoBehaviour
     {
         detectionPoint = transform.Find(DETECTION_OBJECT);
         detectionLayer = LayerMask.GetMask(ITEM_LAYER);
+
+        InitUiInstance();
     }
 
     private void Update()
@@ -51,6 +55,9 @@ public class InteractionSystem : MonoBehaviour
         }
     }
 
+    public void PickUpItem(GameObject item) => pickedItems.Add(item);
+
+
     private void OnDrawGizmosSelected()
     {
         if (detectionPoint == null) return;
@@ -60,3 +67,51 @@ public class InteractionSystem : MonoBehaviour
     }
 }
 
+public partial class InteractionSystem
+{
+    private Transform   examineUiRoot;
+    private Image       examineImage;
+    private TMP_Text    descriptionText;
+
+    private bool examining = false;
+    
+    public bool IsExamining => examining;
+
+    private void InitUiInstance()
+    {
+        examineUiRoot = GameObject
+            .Find("canvas")
+            .transform
+            .Find("examine_ui");
+
+        examineImage = examineUiRoot
+            .Find("examine_image")
+            .GetComponent<Image>();
+
+        descriptionText = examineUiRoot
+            .Find("description_text")
+            .GetComponent<TMP_Text>();
+    }
+
+    public void ExamineItem(Item item)
+    {
+        if (examining)
+        {
+            examineUiRoot
+                .gameObject
+                .SetActive(false);
+
+            examining = false;
+            return;
+        }
+
+        examining = true;
+
+        examineImage.sprite = item.GetComponent<SpriteRenderer>().sprite;
+        descriptionText.text = item.DescriptionText;
+        
+        examineUiRoot
+            .gameObject
+            .SetActive(true);
+    }
+}
