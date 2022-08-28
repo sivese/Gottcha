@@ -86,7 +86,7 @@ namespace dummy
 
         private bool CanMove()
         {
-            if(FindObjectOfType<InteractionSystem>().IsExamining)
+            if(FindObjectOfType<InteractionSystem>().IsExamining || FindObjectOfType<InventorySystem>().IsOpen)
             {
                 body.velocity = Vector3.zero;
                 horValue = 0;

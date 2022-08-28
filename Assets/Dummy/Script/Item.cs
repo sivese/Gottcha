@@ -45,7 +45,7 @@ namespace dummy
                     break;
                 case InteractionType.PickUp:
                     Debug.Log("PICK UP");
-                    FindObjectOfType<InteractionSystem>().PickUpItem(gameObject); // Find object with type
+                    FindObjectOfType<InventorySystem>().PickUp(gameObject); // Find object with type
                     gameObject.SetActive(false);
                     break;
                 case InteractionType.Examine:

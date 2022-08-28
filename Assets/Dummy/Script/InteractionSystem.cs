@@ -95,11 +95,6 @@ namespace dummy
             if (examineText == null) Debug.Log("null text!");
         }
 
-        public void PickUpItem(GameObject item)
-        {
-            pickedItems.Add(item);
-        }
-
         public void ExamineItem(Item item)
         {
             if(examining)
