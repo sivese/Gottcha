@@ -55,9 +55,6 @@ public partial class InteractionSystem : MonoBehaviour
         }
     }
 
-    public void PickUpItem(GameObject item) => pickedItems.Add(item);
-
-
     private void OnDrawGizmosSelected()
     {
         if (detectionPoint == null) return;

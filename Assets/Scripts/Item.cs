@@ -39,7 +39,7 @@ public class Item : MonoBehaviour
         {
             case InteractionType.PickUp:
                 Debug.Log("Picked item");
-                FindObjectOfType<InteractionSystem>().PickUpItem(gameObject);
+                FindObjectOfType<InventorySystem>().PickUp(gameObject);
                 gameObject.SetActive(false);
                 break;
             case InteractionType.Examine:

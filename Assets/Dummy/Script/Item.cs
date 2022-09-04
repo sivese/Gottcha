@@ -17,11 +17,17 @@ namespace dummy
             Examine,
         }
 
-        [SerializeField]
-        private InteractionType type;
+        public enum ItemType
+        { 
+            Static,
+            Consumable
+        }
 
-        [Header("Examine")]
+        public InteractionType type;
+        public ItemType itemType;
+
         [SerializeField]
+        [Header("Examine")]
         private string descriptionText;
 
         public string DescriptionText => descriptionText;
@@ -29,6 +35,8 @@ namespace dummy
         [Header("Custom Event")]
         public UnityEvent customEvent;
 
+        public UnityEvent consumeEvent;
+        
         private const int ITEM_LAYER = 8;
 
         private void Reset()

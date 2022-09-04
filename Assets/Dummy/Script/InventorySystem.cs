@@ -10,7 +10,7 @@ namespace dummy
 {
     public class InventorySystem : MonoBehaviour
     {
-        private List<GameObject> items;
+        private List<GameObject> items = new();
         
         private bool isOpen;
         public bool IsOpen => isOpen;
@@ -39,15 +39,15 @@ namespace dummy
         private void ToggleInventory()
         {
             isOpen = !isOpen;
-            inventoryUi.gameObject.SetActive(true);
+            inventoryUi.gameObject.SetActive(isOpen);
         }
 
         private void UpdateUi()
         {
             HideAll();
-            var leng = itemImages.Length;
+            var leng = itemImages.Length > items.Count ? items.Count : itemImages.Length;
 
-            foreach(var i in Enumerable.Range(0, leng))
+            for(var i = 0; i < leng; i++)
             {
                 itemImages[i].sprite = items[i]
                     .GetComponent<SpriteRenderer>()
@@ -80,8 +80,37 @@ namespace dummy
         }
 
         private void Awake()
-        { 
-        
+        {
+            inventoryUi = GameObject
+                .Find("canvas")
+                .transform
+                .Find("inventory_ui");
+
+            var panel = inventoryUi
+                .Find("inventory_panel");
+
+            var idx = 0;
+            itemImages = new Image[panel.childCount];
+
+            foreach (var ch in panel)
+            {
+                var go = ch as Transform;
+
+                itemImages[idx] = go.GetChild(0).GetComponent<Image>();
+
+                idx++;
+            }
+        }
+
+        public void Consume(int id)
+        {
+            if (items[id].GetComponent<Item>().itemType == Item.ItemType.Consumable)
+            {
+                Debug.Log($"Consumed {items[id].name}");
+                items[id].GetComponent<Item>().consumeEvent.Invoke();
+                Destroy(items[id], 0.1f);
+                items.RemoveAt(id);
+            }
         }
     }
 }
